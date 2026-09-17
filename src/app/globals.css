@@ -1,0 +1,209 @@
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.45;
+  color: #e2e8f0;
+  background: #0b1220;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, #12203a 0%, transparent 55%),
+    #0b1220;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2.5rem;
+}
+
+.header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.35rem;
+}
+
+.muted {
+  color: #94a3b8;
+  margin: 0;
+}
+
+.muted.small {
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.banner {
+  margin: 0.75rem 0 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  font-size: 0.9rem;
+}
+
+.controls {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid #1e293b;
+}
+
+.controls label,
+.settings .field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.controls input,
+.settings input[type="text"],
+.settings input[type="number"],
+.settings select {
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #f8fafc;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #f1f5f9;
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: #0284c7;
+  border-color: #0ea5e9;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.player-pane,
+.settings-pane {
+  min-width: 0;
+}
+
+.placeholder,
+.player-shell {
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #1e293b;
+  background: #000;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.player {
+  width: 100%;
+  height: 100%;
+}
+
+.error {
+  margin: 0.75rem 0 0;
+  color: #fecaca;
+}
+
+.events {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: rgba(15, 23, 42, 0.85);
+}
+
+.events h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+}
+
+.events ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.settings {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid #1e293b;
+}
+
+.settings h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.settings fieldset {
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  margin: 0 0 0.75rem;
+  padding: 0.65rem 0.75rem 0.85rem;
+}
+
+.settings legend {
+  padding: 0 0.35rem;
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.settings .check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.35rem 0;
+}
+
+.settings .field + .field {
+  margin-top: 0.5rem;
+}
