@@ -3,6 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "description": "NSG Player sample — Next.js App Router with thin BFF (mock + real)",
+  "homepage": "https://github.com/codenannu/nsgplayer-sample-nextjs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codenannu/nsgplayer-sample-nextjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codenannu/nsgplayer-sample-nextjs/issues"
+  },
+  "license": "MIT",
   "engines": {
     "node": ">=20"
   },
