@@ -139,16 +139,74 @@ export async function fetchProviderSignedUrl(
     typeof data.expiresAt === "number"
       ? data.expiresAt
       : Date.now() + 30 * 60_000;
+
+  const token = typeof data.token === "string" ? data.token : undefined;
+  const username =
+    (typeof data.username === "string" && data.username) ||
+    (typeof data.userName === "string" && data.userName) ||
+    undefined;
+  const mobile = typeof data.mobile === "string" ? data.mobile : undefined;
+
+  const authParams: Record<string, string> = {
+    ...(data.authParams && typeof data.authParams === "object"
+      ? (data.authParams as Record<string, string>)
+      : {}),
+  };
+  if (token && !authParams.token) authParams.token = token;
+  if (!authParams.expires) {
+    const expires =
+      typeof data.expires === "string" || typeof data.expires === "number"
+        ? String(data.expires)
+        : String(Math.floor(expiresAt / 1000));
+    authParams.expires = expires;
+  }
+  if (username && !authParams.username) authParams.username = username;
+  if (mobile && !authParams.mobile) authParams.mobile = mobile;
+
   return {
     url,
     expiresAt,
-    token: typeof data.token === "string" ? data.token : undefined,
+    token,
     live: Boolean(data.live),
-    authParams:
-      data.authParams && typeof data.authParams === "object"
-        ? (data.authParams as Record<string, string>)
-        : undefined,
+    authParams: Object.keys(authParams).length > 0 ? authParams : undefined,
   };
+}
+
+/** Attach playback session auth onto an allowlisted upstream enc.key URL. */
+export function buildKeyProxyUpstreamUrl(
+  allowedUrl: string,
+  auth: {
+    token?: string;
+    expires?: string;
+    username?: string;
+    mobile?: string;
+  },
+): string {
+  const parsed = new URL(allowedUrl);
+  parsed.searchParams.delete("token");
+  parsed.searchParams.delete("expires");
+  parsed.searchParams.delete("username");
+  parsed.searchParams.delete("mobile");
+  if (auth.token) parsed.searchParams.set("token", auth.token);
+  if (auth.expires) parsed.searchParams.set("expires", auth.expires);
+  if (auth.username?.trim()) {
+    parsed.searchParams.set("username", auth.username.trim());
+  }
+  if (auth.mobile?.trim()) {
+    parsed.searchParams.set("mobile", auth.mobile.trim());
+  }
+  return parsed.toString();
+}
+
+/** API-origin keys may need Bearer; CDN hosts use query auth only. */
+export function shouldAttachApiBearerForKeyUrl(candidateUrl: string): boolean {
+  const apiBase = process.env.VIDEO_API_BASE_URL;
+  if (!apiBase) return false;
+  try {
+    return new URL(candidateUrl).origin === new URL(apiBase).origin;
+  } catch {
+    return false;
+  }
 }
 
 export function keyAllowedOrigins(): string[] {

@@ -6,7 +6,7 @@ Public playground with a **thin App Router BFF** + full React control chrome for
 |--|--|
 | Port | **3001** |
 | Repo | [nsgplayer-sample-nextjs](https://github.com/codenannu/nsgplayer-sample-nextjs) |
-| SDK (pinned) | `@codenkay/video-nsgplayer-core` / `react` / `ui` **^3.0.4** |
+| SDK (pinned) | `@codenkay/video-nsgplayer-core` / `react` / `ui` **^5.0.0** |
 | Modes | **Mock** (default, no secrets) · **Real** with `VIDEO_API_*` |
 
 > This sample is **standalone**. It does **not** require cloning the private SDK monorepo ([`nsgplayer-video`](https://github.com/codenannu/nsgplayer-video)). It installs packages from **npm** only. The private repo’s `apps/demo` is the full product demo — this sample is the customer-facing BFF lab.
@@ -59,7 +59,7 @@ npm run dev
 | `POST` | `/api/auth-token` | Short-lived playback token |
 | `GET` | `/api/videos/:videoId/signed-url` | Signed HLS source |
 | `POST` | `/api/videos/:videoId/proxy-refresh` | Refresh / rotate source |
-| `GET` | `/api/hls/key?url=…` | Key proxy (SSRF allowlist; **501** in mock) |
+| `GET` | `/api/hls/key?url=&videoId=&token=&expires=&username=&mobile=` | Key proxy (SSRF allowlist; **501** in mock). Forwards playback auth onto upstream `enc.key`. |
 
 ## Install peers (into your own app)
 
@@ -77,15 +77,17 @@ Wire `auth.getToken`, `playback.getSource` / `refreshSource`, and optional `keyP
 
 | Package | Tested |
 |---------|--------|
-| `@codenkay/video-nsgplayer-core` | ^3.0.4 |
-| `@codenkay/video-nsgplayer-react` | ^3.0.4 |
-| `@codenkay/video-nsgplayer-ui` | ^3.0.4 |
+| `@codenkay/video-nsgplayer-core` | ^5.0.0 |
+| `@codenkay/video-nsgplayer-react` | ^5.0.0 |
+| `@codenkay/video-nsgplayer-ui` | ^5.0.0 |
 
 ## Troubleshooting
 
 - **CI / local without secrets** — leave mock mode (default); do not require `VIDEO_API_*`.
 - **CORS from Angular/React samples** — ensure this app is on **3001** and origins are allowlisted.
 - **Styles** — `import "@codenkay/video-nsgplayer-ui/styles.css"` from JS/TS (not Tailwind CSS `@import`).
+- **AES / enc.key** — mock Mux sample has no encryption key (key route returns **501**). Real AES needs this BFF key proxy. For browser-direct AES (no BFF hop), omit `keyProxyUrlBuilder` and rely on SDK `getKeyAccessToken` (AuthManager auto-wire).
+- **Live identity** — provider `username` / `mobile` are normalized into `authParams` and forwarded on the key-proxy query.
 
 ## License
 

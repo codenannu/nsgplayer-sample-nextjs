@@ -30,20 +30,27 @@ export function Playground() {
     return {
       ...base,
       streaming: {
+        keyProxyMaxFailures: 2,
         keyProxyUrlBuilder: ({
           videoId,
           keyUrl,
           token,
           expires,
+          username,
+          mobile,
         }: {
           videoId: string;
           keyUrl: string;
           token?: string;
           expires?: string;
+          username?: string;
+          mobile?: string;
         }) => {
           const params = new URLSearchParams({ url: keyUrl, videoId });
           if (token) params.set("token", token);
           if (expires) params.set("expires", expires);
+          if (username) params.set("username", username);
+          if (mobile) params.set("mobile", mobile);
           return `/api/hls/key?${params.toString()}`;
         },
       },
@@ -116,10 +123,34 @@ export function Playground() {
     setError(null);
   };
 
-  const onConfigChange = useCallback((next: PlaygroundConfig) => {
-    setConfig(next);
-    playerRef.current?.updateConfig(toPlayerConfigPartial(next));
-  }, []);
+  const onConfigChange = useCallback(
+    (next: PlaygroundConfig) => {
+      setConfig(next);
+      const base = toPlayerConfigPartial(next);
+      playerRef.current?.updateConfig({
+        ...base,
+        streaming: {
+          keyProxyMaxFailures: 2,
+          keyProxyUrlBuilder: ({
+            videoId,
+            keyUrl,
+            token,
+            expires,
+            username,
+            mobile,
+          }) => {
+            const params = new URLSearchParams({ url: keyUrl, videoId });
+            if (token) params.set("token", token);
+            if (expires) params.set("expires", expires);
+            if (username) params.set("username", username);
+            if (mobile) params.set("mobile", mobile);
+            return `/api/hls/key?${params.toString()}`;
+          },
+        },
+      });
+    },
+    [],
+  );
 
   return (
     <div className="page">
