@@ -71,7 +71,7 @@ Wire `auth.getToken`, `playback.getSource` / `refreshSource`, and optional `keyP
 
 ## Shared contract
 
-`src/shared/` is vendored identically in the React and Angular samples. Keep them in sync when editing playground fields.
+`src/shared/` is vendored identically in the React and Angular samples (`playgroundConfig`, `sampleMedia`, `bffClient`). Keep them in sync when editing. React/Angular BFF mode call this app’s routes over HTTP (`localhost:3001`) using `bffClient.ts`.
 
 ## Version matrix
 
